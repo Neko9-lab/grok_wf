@@ -1,58 +1,39 @@
-# Changelog
+# 更新日志
 
-Notable changes to **gwf-cli**.
+**gwf-cli** 重要变更。文档小改只推 `main`，不升版本、不发 Release（除非维护者明确确认）。
 
-**Policy:** Doc-only fixes ship on `main` without a new npm version or GitHub Release.  
-Version bumps and releases require explicit confirmation from the maintainer.
+English summary: see release tags / [README.en.md](./README.en.md).
 
 ## [0.1.6] - 2026-07-13
 
-### Added
+### 新增
 
-- Init-time automations (with confirm): Grok folder trust + git pre-commit scope check
-- Commands: `gwf trust`, `gwf enable-automations`
-- User guide: `docs/使用说明.md`
-- GitHub README language switch: [English](./README.md) / [中文](./README.zh-CN.md)
+- init 可开启：Grok 自动加载 + git 提交范围检查（二次确认）
+- `gwf trust`、`gwf enable-automations`
+- 使用说明：`docs/使用说明.md`
+- GitHub 首页：中文为主，[English](./README.en.md) 链接切换
 
-### Changed
+### 说明
 
-- Init confirmation in plain Chinese (accepts y/n and Chinese yes/no)
-- Docs: bilingual homepage via language tabs; deep guide in Chinese only
-- Collapsed noisy intermediate 0.1.4/0.1.5 doc-only publishes; **0.1.6** is the clean cut after 0.1.3  
-  (npm permanently reserves unpublished version numbers, so 0.1.4 could not be reused)
+- 曾出现的 0.1.4 / 0.1.5 文档向发版已清理；npm 无法复用已撤回版本号，故推荐版本为 **0.1.6**
 
 ## [0.1.3] - 2026-07-13
 
-### Added
-
-- Early deploy notes and CHANGELOG
+- 早期部署说明与 CHANGELOG
 
 ## [0.1.2] - 2026-07-13
 
-### Changed
-
-- Plain Chinese init prompt
+- init 中文白话确认
 
 ## [0.1.1] - 2026-07-13
 
-### Added
-
-- Init automations first implementation
+- init 自动化首版
 
 ## [0.1.0] - 2026-07-13
 
-### Added
+- 首发 gwf-cli：init / update / doctor、`.gwf` + `.grok`、scope 检查
 
-- First public **gwf-cli** release
-- `gwf init` / `update` / `upgrade` / `doctor` / `install-hooks`
-- `.gwf/` + `.grok/` adapters, scope checks
-
-## Links
+## 链接
 
 - https://www.npmjs.com/package/gwf-cli
 - https://github.com/Neko9-lab/grok_wf
-- https://github.com/Neko9-lab/grok_wf/releases/tag/v0.1.6
-
-[0.1.6]: https://github.com/Neko9-lab/grok_wf/releases/tag/v0.1.6
-[0.1.3]: https://github.com/Neko9-lab/grok_wf/releases/tag/v0.1.3
-[0.1.0]: https://github.com/Neko9-lab/grok_wf/releases/tag/v0.1.0

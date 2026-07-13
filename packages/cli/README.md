@@ -1,16 +1,16 @@
 # gwf-cli
 
-CLI for **GWF** — AI coding workflow for **Grok Build**.
+**GWF** — Grok Build 专用 AI 编码工作流 CLI。
 
-**GitHub:** [English](https://github.com/Neko9-lab/grok_wf/blob/main/README.md) · [中文](https://github.com/Neko9-lab/grok_wf/blob/main/README.zh-CN.md)
+- 中文主页：https://github.com/Neko9-lab/grok_wf  
+- English: https://github.com/Neko9-lab/grok_wf/blob/main/README.en.md  
+- 使用说明：https://github.com/Neko9-lab/grok_wf/blob/main/docs/使用说明.md  
 
 ```bash
 npm install -g gwf-cli --registry https://registry.npmjs.org/
-cd your-project && gwf init -u your-name
+cd 你的项目 && gwf init -u 你的名字
 grok
 ```
-
-Guide (中文): https://github.com/Neko9-lab/grok_wf/blob/main/docs/使用说明.md  
 
 ```bash
 gwf update && gwf doctor
