@@ -8,6 +8,8 @@ export interface InstallHooksOptions {
   cwd: string;
   force: boolean;
   uninstall: boolean;
+  /** Suppress banner (when called from init / enable-automations). */
+  quiet?: boolean;
 }
 
 export async function installHooksCommand(
@@ -25,33 +27,42 @@ export async function installHooksCommand(
   if (opts.force) args.push("--force");
   if (opts.uninstall) args.push("--uninstall");
 
-  console.log(chalk.bold("\nGWF install-hooks"), chalk.dim(`@ ${projectRoot}\n`));
+  if (!opts.quiet) {
+    console.log(chalk.bold("\nGWF install-hooks"), chalk.dim(`@ ${projectRoot}\n`));
+  }
 
   const result = spawnSync("python", args, {
     cwd: projectRoot,
-    stdio: "inherit",
+    stdio: opts.quiet ? "pipe" : "inherit",
     shell: true,
+    encoding: "utf8",
   });
 
   if (result.status !== 0) {
-    // fallback python3
     const r2 = spawnSync("python3", args, {
       cwd: projectRoot,
-      stdio: "inherit",
+      stdio: opts.quiet ? "pipe" : "inherit",
       shell: true,
+      encoding: "utf8",
     });
     if (r2.status !== 0) {
+      const err =
+        (result.stderr || result.stdout || r2.stderr || r2.stdout || "").toString();
       throw new Error(
-        `install_git_hooks.py failed (exit ${result.status ?? r2.status})`,
+        `install_git_hooks.py failed (exit ${result.status ?? r2.status})${err ? `: ${err.trim()}` : ""}`,
       );
     }
   }
 
-  if (!opts.uninstall) {
-    console.log(chalk.green("\n✓ Git pre-commit will block out-of-scope commits when a GWF task is active."));
+  if (!opts.uninstall && !opts.quiet) {
+    console.log(
+      chalk.green(
+        "\n✓ 已安装提交检查：有进行中的 GWF 任务时，范围外的改动不能 commit。",
+      ),
+    );
     console.log(
       chalk.dim(
-        "  Emergency skip: git commit --no-verify  |  Remove: gwf install-hooks --uninstall\n",
+        "  紧急跳过: git commit --no-verify  |  卸载: gwf install-hooks --uninstall\n",
       ),
     );
   }

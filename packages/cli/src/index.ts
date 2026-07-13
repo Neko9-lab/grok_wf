@@ -41,12 +41,12 @@ program
   .option("-s, --skip-existing", "Skip files that already exist", false)
   .option(
     "-y, --yes",
-    "Skip confirmation; enable Grok trust + git hooks",
+    "不提问，直接开启：自动加载工作流 + 提交前范围检查",
     false,
   )
   .option(
     "--no-automations",
-    "Do not enable Grok trust or git pre-commit hooks",
+    "不开启自动加载与提交检查（需自己 /start）",
     false,
   )
   .option("--cwd <path>", "Target project directory", process.cwd())
@@ -119,7 +119,7 @@ program
 program
   .command("trust")
   .description(
-    "Trust this folder in Grok Build so SessionStart hooks auto-inject GWF context",
+    "允许本项目在 Grok 中自动加载工作流（不必每次 /start）",
   )
   .option("--cwd <path>", "Target project directory", process.cwd())
   .action(async (opts) => {
@@ -129,7 +129,7 @@ program
 program
   .command("enable-automations")
   .description(
-    "Prompt to enable Grok auto-inject (trust) + git pre-commit scope gate",
+    "开启：打开 Grok 自动加载工作流 + 提交前检查改动范围（会二次确认）",
   )
   .option("-y, --yes", "Skip confirmation; enable both", false)
   .option("-f, --force", "Force rewrite git hook block", false)

@@ -39,21 +39,18 @@ async function finishWithAutomations(
   });
 
   if (kind === "fresh") {
-    console.log(chalk.green(`\n✓ GWF ${cliVersion} ready for "${user}"`));
+    console.log(chalk.green(`\n✓ GWF ${cliVersion} 已就绪（开发者：${user}）`));
     console.log(`
-${chalk.bold("How to use (no /start needed if automations enabled):")}
-  1. ${chalk.bold("cd")} this project
-  2. Open ${chalk.bold("Grok Build")} in this folder
-  3. ${chalk.bold("Just describe what you want")} — SessionStart injects GWF context
+${chalk.bold("接下来怎么用：")}
+  1. 在本项目目录打开 ${chalk.bold("Grok Build")}
+  2. ${chalk.bold("直接说需求")}（例如：加一个登录页）
+  3. 复杂功能会问你是否建任务；确认改动范围后即可实现
 
-${chalk.dim("If injection missing: gwf trust   or   grok --trust")}
-${chalk.dim("Commit scope gate: already installed unless you declined")}
+${chalk.dim("若打开 Grok 后它像「不认识 GWF」：再执行  gwf trust")}
 `);
   } else {
-    console.log(chalk.green(`\n✓ Joined as developer "${user}"`));
-    console.log(
-      chalk.dim("Open Grok in this repo and describe what you want to do.\n"),
-    );
+    console.log(chalk.green(`\n✓ 已加入项目（开发者：${user}）`));
+    console.log(chalk.dim("在本项目打开 Grok，直接说需求即可。\n"));
   }
 }
 
@@ -76,8 +73,8 @@ export async function initCommand(opts: InitOptions): Promise<void> {
     );
     console.log(
       chalk.dim(
-        "Re-run automations (trust + git hooks)? Use: gwf enable-automations\n" +
-          "Or: gwf update | gwf doctor | gwf trust | gwf install-hooks\n",
+        "若要重新开启「自动加载 + 提交检查」: gwf enable-automations\n" +
+          "其他: gwf update | gwf doctor | gwf trust\n",
       ),
     );
     return;

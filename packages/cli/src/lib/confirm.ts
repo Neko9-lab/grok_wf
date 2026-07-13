@@ -12,7 +12,8 @@ export async function confirm(
     return defaultYes;
   }
 
-  const hint = defaultYes ? "Y/n" : "y/N";
+  // Chinese-friendly: 是/否，回车默认
+  const hint = defaultYes ? "Y/n，直接回车=是" : "y/N，直接回车=否";
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -25,7 +26,7 @@ export async function confirm(
 
   const t = answer.trim().toLowerCase();
   if (!t) return defaultYes;
-  if (t === "y" || t === "yes") return true;
-  if (t === "n" || t === "no") return false;
+  if (t === "y" || t === "yes" || t === "是" || t === "好" || t === "ok") return true;
+  if (t === "n" || t === "no" || t === "否" || t === "不") return false;
   return defaultYes;
 }
