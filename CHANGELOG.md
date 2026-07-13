@@ -3,7 +3,7 @@
 Notable changes to **gwf-cli**.  
 Doc-only fixes usually ship on `main` without a new release.
 
-## [0.1.4] - 2026-07-13
+## [0.1.6] - 2026-07-13
 
 ### Added
 
@@ -31,7 +31,7 @@ Doc-only fixes usually ship on `main` without a new release.
 
 ### Changed
 
-- Plain Chinese init prompt (ÊòØ/Âê¶, y/n)
+- Plain Chinese init prompt (Êò?Âê? y/n)
 
 ## [0.1.1] - 2026-07-13
 
@@ -52,5 +52,5 @@ Doc-only fixes usually ship on `main` without a new release.
 - https://www.npmjs.com/package/gwf-cli
 - https://github.com/Neko9-lab/grok_wf
 
-[0.1.4]: https://github.com/Neko9-lab/grok_wf/releases/tag/v0.1.4
+[0.1.6]: https://github.com/Neko9-lab/grok_wf/releases/tag/v0.1.6
 [0.1.0]: https://github.com/Neko9-lab/grok_wf/releases/tag/v0.1.0
