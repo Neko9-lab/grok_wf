@@ -6,10 +6,11 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "npm run build -w @gwf/cli",
-    "dev": "npm run dev -w @gwf/cli",
-    "test": "npm run test -w @gwf/cli",
-    "gwf": "node packages/cli/bin/gwf.js"
+    "build": "npm run build -w gwf-cli",
+    "dev": "npm run dev -w gwf-cli",
+    "test": "npm run test -w gwf-cli",
+    "gwf": "node packages/cli/bin/gwf.js",
+    "publish:cli": "npm publish -w gwf-cli --access public --registry https://registry.npmjs.org/"
   },
   "engines": {
     "node": ">=18.17.0"

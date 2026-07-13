@@ -17,10 +17,10 @@
 # 从本仓库本地开发安装
 npm install
 npm run build
-npm link -w @gwf/cli
+npm link -w gwf-cli
 
-# 或全局（发布到 npm 后）
-npm install -g @gwf/cli
+# 或全局（npm 已发布）
+npm install -g gwf-cli
 ```
 
 ## 在任意项目中使用

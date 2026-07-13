@@ -7,7 +7,7 @@ export interface UpgradeOptions {
 }
 
 export async function upgradeCommand(opts: UpgradeOptions): Promise<void> {
-  const pkg = "@gwf/cli";
+  const pkg = "gwf-cli";
   const spec = `${pkg}@${opts.tag}`;
   const cmd = `npm install -g ${spec}`;
 
@@ -19,14 +19,18 @@ export async function upgradeCommand(opts: UpgradeOptions): Promise<void> {
     return;
   }
 
-  const result = spawnSync("npm", ["install", "-g", spec], {
-    stdio: "inherit",
-    shell: true,
-  });
+  const result = spawnSync(
+    "npm",
+    ["install", "-g", spec, "--registry", "https://registry.npmjs.org/"],
+    {
+      stdio: "inherit",
+      shell: true,
+    },
+  );
 
   if (result.status !== 0) {
     throw new Error(
-      `npm install failed (exit ${result.status ?? "unknown"}). If the package is not published yet, use local: npm link -w @gwf/cli`,
+      `npm install failed (exit ${result.status ?? "unknown"}). If the package is not published yet, use local: npm run build && npm link -w gwf-cli`,
     );
   }
 

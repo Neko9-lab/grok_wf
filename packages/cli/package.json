@@ -1,7 +1,7 @@
 {
-  "name": "@gwf/cli",
+  "name": "gwf-cli",
   "version": "0.1.0",
-  "description": "Grok Workflow Framework CLI — init AI coding workflow in any project",
+  "description": "Grok Workflow Framework CLI — init AI coding workflow in any project for Grok Build",
   "type": "module",
   "bin": {
     "gwf": "./bin/gwf.js"
@@ -26,10 +26,24 @@
     "ai",
     "workflow",
     "coding-agent",
-    "cli"
+    "cli",
+    "grok-build"
   ],
-  "author": "",
+  "author": "Neko9-lab",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Neko9-lab/grok_wf.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/Neko9-lab/grok_wf/issues"
+  },
+  "homepage": "https://github.com/Neko9-lab/grok_wf#readme",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "engines": {
     "node": ">=18.17.0"
   },
