@@ -1,93 +1,75 @@
 # GWF — Grok Workflow Framework
 
-**English** | [中文](./README.zh-CN.md)
-
-An out-of-the-box **AI coding workflow framework for Grok Build only**.
-
-It persists specs, tasks, and session journals in your repo, and runs a **Plan → Execute → Finish** loop so agents follow project standards. Install into any project with `gwf init`.
+开箱即用的 **Grok Build 专用** AI 编码工作流。  
+Out-of-the-box **AI coding workflow for Grok Build only**.
 
 | | |
 |--|--|
-| **npm** | [gwf-cli](https://www.npmjs.com/package/gwf-cli) (command: `gwf`) |
-| **Deploy & usage** | [docs/deploy-and-usage.md](./docs/deploy-and-usage.md) |
+| **npm** | [gwf-cli](https://www.npmjs.com/package/gwf-cli) · command `gwf` |
+| **Docs** | [使用说明](./docs/使用说明.md) |
 | **Changelog** | [CHANGELOG.md](./CHANGELOG.md) |
 | **Releases** | https://github.com/Neko9-lab/grok_wf/releases |
 
 ---
 
-## 30-second start
+## 中文 · 快速开始
+
+```bash
+npm install -g gwf-cli --registry https://registry.npmjs.org/
+
+cd 你的项目
+gwf init -u 你的名字
+# 提示「是否开启自动加载 + 提交检查」时，直接回车即可
+
+grok
+# 直接说需求，例如：加一个登录功能
+```
+
+**需要：** Node.js ≥ 18、Python ≥ 3.9、Git、[Grok Build](https://x.ai/)
+
+**常用命令：** `gwf init` · `gwf update` · `gwf doctor` · `gwf upgrade`
+
+更细的说明见 [docs/使用说明.md](./docs/使用说明.md)。
+
+---
+
+## English · Quick start
 
 ```bash
 npm install -g gwf-cli --registry https://registry.npmjs.org/
 
 cd your-project
 gwf init -u your-name
-# Confirm setup (default Yes): auto-load workflow in Grok + commit scope check
+# When prompted to enable auto-load + commit checks, press Enter for Yes
 
 grok
-# Describe what you want (no need for /start every time)
+# Describe what you want, e.g. add a login feature
 ```
 
----
+**Requires:** Node.js ≥ 18, Python ≥ 3.9, Git, [Grok Build](https://x.ai/)
 
-## Prerequisites
+**Commands:** `gwf init` · `gwf update` · `gwf doctor` · `gwf upgrade`
 
-| Requirement | Version |
-|-------------|---------|
-| Node.js | >= 18.17 |
-| Python | >= 3.9 |
-| Git | recent |
-| [Grok Build](https://x.ai/) | installed |
+Details (Chinese): [docs/使用说明.md](./docs/使用说明.md).
 
 ---
 
-## Common commands
+## What it does / 做什么
 
-| Command | Purpose |
-|---------|---------|
-| `gwf init -u <name>` | Init project; confirm auto-load + commit checks |
-| `gwf init -u <name> -y` | Same, no prompt |
-| `gwf enable-automations` | Re-enable auto-load + commit checks |
-| `gwf trust` | Trust folder for Grok auto context only |
-| `gwf update` | Sync project templates to CLI version |
-| `gwf upgrade` | Upgrade global CLI |
-| `gwf doctor` | Health check |
-| `gwf install-hooks` | Git pre-commit scope gate only |
+| EN | 中文 |
+|----|------|
+| Specs, tasks, journals live in the repo | 规范、任务、日志进仓库 |
+| Plan → Execute → Finish for non-trivial work | 复杂工作走规划→实现→收尾 |
+| Optional auto context in Grok (no `/start` every time) | 可选：打开 Grok 自动带上下文 |
+| Optional commit gate for change scope | 可选：提交前检查改动范围 |
 
 ---
 
-## Layout after init
-
-```
-your-project/
-├── .gwf/          # Core workflow (workflow, spec, tasks, scripts)
-├── .grok/         # Grok skills / commands / hooks / agents
-└── AGENTS.md      # Grok entry instructions
-```
-
----
-
-## Workflow (for the agent)
-
-1. **Plan** — Clarify requirements, write `prd.md`, fill `scope.json` (allowed paths)
-2. **Execute** — Implement within scope + check
-3. **Finish** — Update specs, commit, archive, journal
-
-**You mainly:** state the goal, confirm scope, approve commits.
-
----
-
-## Develop this repo
+## Develop this repo / 开发本仓库
 
 ```bash
-npm install
-npm run build
-npm link -w gwf-cli
+npm install && npm run build && npm link -w gwf-cli
 ```
-
-Full guide: [docs/deploy-and-usage.md](./docs/deploy-and-usage.md).
-
----
 
 ## License
 

@@ -1,45 +1,18 @@
 # gwf-cli
 
-**English** | [中文](https://github.com/Neko9-lab/grok_wf/blob/main/packages/cli/README.zh-CN.md)
-
-CLI for **GWF (Grok Workflow Framework)** — **Grok Build only**.
-
-## Install & use
+CLI for **GWF** — AI coding workflow for **Grok Build**.
 
 ```bash
 npm install -g gwf-cli --registry https://registry.npmjs.org/
-
-cd your-project
-gwf init -u your-name
-# Confirm: auto-load workflow in Grok + commit scope check? Enter = Yes
-
-grok
-# Describe your goal
+cd your-project && gwf init -u your-name
+grok   # describe what you want
 ```
 
-| Doc | Link |
-|-----|------|
-| Deploy & usage (EN) | https://github.com/Neko9-lab/grok_wf/blob/main/docs/deploy-and-usage.md |
-| 部署与使用（中文） | https://github.com/Neko9-lab/grok_wf/blob/main/docs/部署与使用.md |
-| Changelog | https://github.com/Neko9-lab/grok_wf/blob/main/CHANGELOG.md |
-| GitHub | https://github.com/Neko9-lab/grok_wf |
+- GitHub (中英简介): https://github.com/Neko9-lab/grok_wf  
+- 使用说明: https://github.com/Neko9-lab/grok_wf/blob/main/docs/使用说明.md  
 
 ```bash
-gwf update
-gwf doctor
-gwf upgrade
-gwf enable-automations
-gwf trust
+gwf update && gwf doctor
 ```
 
-## Local monorepo
-
-```bash
-npm install
-npm run build
-npm link -w gwf-cli
-```
-
-## License
-
-MIT
+MIT · monorepo: `npm run build && npm link -w gwf-cli`
