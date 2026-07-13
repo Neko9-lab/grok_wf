@@ -20,6 +20,7 @@ Thumbs.db
 .env
 .env.*
 
-# Test scratch
+# Test scratch / local smoke projects (own .git)
 /tmp-init-test/
 /scratch/
+/examples/demo-app/

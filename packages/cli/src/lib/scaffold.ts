@@ -205,6 +205,36 @@ Produce a usable first version of \`.gwf/spec/\` so later GWF tasks can load rea
 - Rewriting application code
 `,
   );
+  // Seed jsonl like task.py create (spec/research paths only)
+  const seed =
+    JSON.stringify({
+      _example:
+        'Fill with {"file": "<path>", "reason": "<why>"}. Spec/research only. Delete this line when done.',
+    }) + "\n";
+  writeText(join(taskDir, "implement.jsonl"), seed);
+  writeText(join(taskDir, "check.jsonl"), seed);
+  ensureDir(join(taskDir, "research"));
+
+  // Point default session at bootstrap so get_context shows an active task
+  const sessionPath = join(
+    projectRoot,
+    GWF_DIR,
+    ".runtime",
+    "sessions",
+    "default.json",
+  );
+  writeText(
+    sessionPath,
+    JSON.stringify(
+      {
+        task_id: name,
+        updated_at: new Date().toISOString(),
+        session_key: "default",
+      },
+      null,
+      2,
+    ) + "\n",
+  );
   return "created";
 }
 
