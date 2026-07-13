@@ -6,6 +6,8 @@
 
 - **npm**: [gwf-cli](https://www.npmjs.com/package/gwf-cli)（命令 `gwf`）
 - **完整部署说明**: [docs/部署与使用.md](./docs/部署与使用.md)
+- **更新日志**: [CHANGELOG.md](./CHANGELOG.md)
+- **Releases**: https://github.com/Neko9-lab/grok_wf/releases
 
 ## 30 秒上手
 
