@@ -9,13 +9,15 @@ This project uses **GWF** for structured AI development. Prefer GWF over ad-hoc 
 
 ## Session orientation
 
-If SessionStart hooks did not run (project folder untrusted), at the start of work run:
+**Preferred:** Grok folder is trusted so SessionStart injects `get_context.py` output automatically — the user should **not** need `/start` every time.
+
+If context is missing (untrusted folder), immediately run:
 
 ```bash
 python .gwf/scripts/get_context.py
 ```
 
-To enable project hooks in Grok Build: launch with `grok --trust` from the repo, or run `/hooks-trust` (may not appear in the `/` autocomplete — type it fully), or open `/hooks` and use Trust if available. Hooks are optional; `/start` and skills work without them.
+Then continue. To re-enable auto-inject: `gwf trust` or `gwf enable-automations` or `grok --trust`.
 
 ## Workflow
 

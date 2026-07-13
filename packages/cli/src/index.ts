@@ -8,6 +8,8 @@ import { updateCommand } from "./commands/update.js";
 import { upgradeCommand } from "./commands/upgrade.js";
 import { doctorCommand } from "./commands/doctor.js";
 import { installHooksCommand } from "./commands/install-hooks.js";
+import { trustCommand } from "./commands/trust.js";
+import { enableAutomationsCommand } from "./commands/enable-automations.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -31,10 +33,22 @@ program
 
 program
   .command("init")
-  .description("Initialize GWF in the current project")
+  .description(
+    "Initialize GWF (scaffolds project + prompts to enable auto-inject & git hooks)",
+  )
   .requiredOption("-u, --user <name>", "Developer identity name")
   .option("-f, --force", "Overwrite conflicting template files", false)
   .option("-s, --skip-existing", "Skip files that already exist", false)
+  .option(
+    "-y, --yes",
+    "Skip confirmation; enable Grok trust + git hooks",
+    false,
+  )
+  .option(
+    "--no-automations",
+    "Do not enable Grok trust or git pre-commit hooks",
+    false,
+  )
   .option("--cwd <path>", "Target project directory", process.cwd())
   .action(async (opts) => {
     await initCommand({
@@ -43,6 +57,8 @@ program
       skipExisting: Boolean(opts.skipExisting),
       cwd: opts.cwd as string,
       cliVersion: version,
+      yes: Boolean(opts.yes),
+      noAutomations: Boolean(opts.noAutomations),
     });
   });
 
@@ -97,6 +113,32 @@ program
       cwd: opts.cwd as string,
       force: Boolean(opts.force),
       uninstall: Boolean(opts.uninstall),
+    });
+  });
+
+program
+  .command("trust")
+  .description(
+    "Trust this folder in Grok Build so SessionStart hooks auto-inject GWF context",
+  )
+  .option("--cwd <path>", "Target project directory", process.cwd())
+  .action(async (opts) => {
+    await trustCommand({ cwd: opts.cwd as string });
+  });
+
+program
+  .command("enable-automations")
+  .description(
+    "Prompt to enable Grok auto-inject (trust) + git pre-commit scope gate",
+  )
+  .option("-y, --yes", "Skip confirmation; enable both", false)
+  .option("-f, --force", "Force rewrite git hook block", false)
+  .option("--cwd <path>", "Target project directory", process.cwd())
+  .action(async (opts) => {
+    await enableAutomationsCommand({
+      cwd: opts.cwd as string,
+      yes: Boolean(opts.yes),
+      force: Boolean(opts.force),
     });
   });
 

@@ -28,19 +28,14 @@ npm install -g gwf-cli
 ```bash
 cd your-project
 gwf init -u your-name
+# 默认会二次确认后启用：
+#   1) Grok folder trust → SessionStart 自动注入（不用每次 /start）
+#   2) git pre-commit → 越界 diff 禁止提交
+# 跳过确认直接全开:  gwf init -u your-name -y
+# 完全不要自动化:    gwf init -u your-name --no-automations
 
-# 推荐：带 trust 启动 Grok（项目 hooks 才会跑 SessionStart）
-grok --trust
-# 若已在 TUI 内：试 /hooks-trust（可能不在 / 补全列表里），或 /hooks 打开 Hooks 面板
-
-# 大仓推荐：git commit 时拦截越界 diff
-gwf install-hooks
-
-# 无 Grok hooks 也能用：/start 或让 AI 跑
-# python .gwf/scripts/get_context.py
-# python .gwf/scripts/check_scope.py --strict-missing
-
-# 命令：/start  /continue  /finish-work
+# 直接开 Grok，描述需求即可
+grok
 ```
 
 ## 命令

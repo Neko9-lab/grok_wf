@@ -4,6 +4,7 @@ import chalk from "chalk";
 import { printScaffoldReport, scaffoldProject } from "../lib/scaffold.js";
 import { GWF_DIR } from "../lib/paths.js";
 import { readText } from "../lib/fs.js";
+import { enableAutomations } from "../lib/enable-automations.js";
 
 export interface InitOptions {
   user: string;
@@ -11,12 +12,49 @@ export interface InitOptions {
   skipExisting: boolean;
   cwd: string;
   cliVersion: string;
+  /** Skip prompt; enable git hooks + Grok trust. */
+  yes: boolean;
+  /** Do not install hooks / trust. */
+  noAutomations: boolean;
 }
 
 function sanitizeUser(name: string): string {
   const cleaned = name.trim().replace(/[^\w.-]+/g, "-").replace(/^-+|-+$/g, "");
   if (!cleaned) throw new Error("Invalid -u/--user name");
   return cleaned;
+}
+
+async function finishWithAutomations(
+  projectRoot: string,
+  user: string,
+  cliVersion: string,
+  opts: Pick<InitOptions, "yes" | "noAutomations" | "force">,
+  kind: "fresh" | "join",
+): Promise<void> {
+  await enableAutomations({
+    projectRoot,
+    yes: opts.yes,
+    skip: opts.noAutomations,
+    forceHooks: opts.force,
+  });
+
+  if (kind === "fresh") {
+    console.log(chalk.green(`\n✓ GWF ${cliVersion} ready for "${user}"`));
+    console.log(`
+${chalk.bold("How to use (no /start needed if automations enabled):")}
+  1. ${chalk.bold("cd")} this project
+  2. Open ${chalk.bold("Grok Build")} in this folder
+  3. ${chalk.bold("Just describe what you want")} — SessionStart injects GWF context
+
+${chalk.dim("If injection missing: gwf trust   or   grok --trust")}
+${chalk.dim("Commit scope gate: already installed unless you declined")}
+`);
+  } else {
+    console.log(chalk.green(`\n✓ Joined as developer "${user}"`));
+    console.log(
+      chalk.dim("Open Grok in this repo and describe what you want to do.\n"),
+    );
+  }
 }
 
 export async function initCommand(opts: InitOptions): Promise<void> {
@@ -33,12 +71,13 @@ export async function initCommand(opts: InitOptions): Promise<void> {
     const existing = readText(developerPath).trim();
     console.log(
       chalk.yellow(
-        `Already initialized (developer: ${existing || "unknown"}). Nothing to do.`,
+        `Already initialized (developer: ${existing || "unknown"}).`,
       ),
     );
     console.log(
       chalk.dim(
-        `Tips: gwf update  (sync templates)  |  gwf doctor  |  gwf init -u other-name on a fresh clone without .developer`,
+        "Re-run automations (trust + git hooks)? Use: gwf enable-automations\n" +
+          "Or: gwf update | gwf doctor | gwf trust | gwf install-hooks\n",
       ),
     );
     return;
@@ -46,7 +85,7 @@ export async function initCommand(opts: InitOptions): Promise<void> {
 
   // New developer on existing project
   if (hasGwf && !hasDeveloper) {
-    console.log(chalk.cyan("Existing GWF project — setting up developer identity only.\n"));
+    console.log(chalk.cyan("Existing GWF project — setting up developer identity.\n"));
     const report = scaffoldProject({
       projectRoot,
       user,
@@ -56,10 +95,8 @@ export async function initCommand(opts: InitOptions): Promise<void> {
       updateOnly: false,
       isFirstInit: false,
     });
-    // Force developer + workspace even when skipExisting on templates
     printScaffoldReport(report);
-    console.log(chalk.green(`\n✓ Joined as developer "${user}"`));
-    console.log(chalk.dim("Open Grok Build in this repo and describe what you want to do."));
+    await finishWithAutomations(projectRoot, user, opts.cliVersion, opts, "join");
     return;
   }
 
@@ -76,19 +113,5 @@ export async function initCommand(opts: InitOptions): Promise<void> {
   });
   printScaffoldReport(report);
 
-  console.log(chalk.green(`\n✓ GWF ${opts.cliVersion} initialized for "${user}"`));
-  console.log(`
-Next steps:
-  1. ${chalk.bold("git add .gwf .grok AGENTS.md .gitignore")} and commit
-  2. ${chalk.bold("gwf install-hooks")}   # pre-commit blocks out-of-scope diffs
-  3. Open Grok Build in this project directory
-  4. Trust project hooks (optional SessionStart):
-       ${chalk.bold("grok --trust")}   or type ${chalk.bold("/hooks-trust")} / open ${chalk.bold("/hooks")}
-  5. ${chalk.bold("/start")} or: python .gwf/scripts/get_context.py
-  6. Describe a feature — Plan (fill scope.json) → Execute → ${chalk.bold("/finish-work")}
-
-  Notes:
-  - Grok SessionStart hooks are optional; /start still works without them.
-  - Git pre-commit scope gate is separate (gwf install-hooks).
-`);
+  await finishWithAutomations(projectRoot, user, opts.cliVersion, opts, "fresh");
 }

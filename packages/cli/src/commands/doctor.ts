@@ -140,10 +140,28 @@ export async function doctorCommand(opts: DoctorOptions): Promise<void> {
     }
     checks.push({
       name: "Git pre-commit gate",
-      // Optional but recommended — do not fail doctor hard
       ok: true,
       detail: hookOk ? hookDetail : `${hookDetail}`,
     });
+
+    // Grok folder trust (SessionStart auto-inject)
+    try {
+      const { isGrokFolderTrusted } = await import("../lib/grok-trust.js");
+      const trusted = isGrokFolderTrusted(projectRoot);
+      checks.push({
+        name: "Grok auto-inject (trust)",
+        ok: trusted,
+        detail: trusted
+          ? "folder trusted — SessionStart should inject context"
+          : "not trusted — run: gwf trust   or   gwf enable-automations",
+      });
+    } catch {
+      checks.push({
+        name: "Grok auto-inject (trust)",
+        ok: false,
+        detail: "could not read trust store",
+      });
+    }
   }
 
   let failed = 0;
