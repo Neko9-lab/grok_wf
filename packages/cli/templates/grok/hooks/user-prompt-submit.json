@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python .gwf/scripts/get_context.py --mode workflow-state"
+          }
+        ]
+      }
+    ]
+  }
+}

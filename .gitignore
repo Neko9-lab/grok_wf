@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build
+packages/cli/dist/
+*.tsbuildinfo
+
+# Logs / OS
+*.log
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Env
+.env
+.env.*
+
+# Test scratch
+/tmp-init-test/
+/scratch/

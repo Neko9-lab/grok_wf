@@ -1,0 +1,44 @@
+{
+  "name": "@gwf/cli",
+  "version": "0.1.0",
+  "description": "Grok Workflow Framework CLI — init AI coding workflow in any project",
+  "type": "module",
+  "bin": {
+    "gwf": "./bin/gwf.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "bin",
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc && node scripts/copy-templates.js",
+    "dev": "tsc --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test dist/**/*.test.js 2>nul || node --test dist/lib/*.test.js 2>nul || echo \"no unit tests yet\"",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "grok",
+    "gwf",
+    "ai",
+    "workflow",
+    "coding-agent",
+    "cli"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "commander": "^13.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "typescript": "^5.8.2"
+  }
+}

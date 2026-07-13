@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python .gwf/scripts/get_context.py"
+          }
+        ]
+      }
+    ]
+  }
+}

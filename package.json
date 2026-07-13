@@ -1,0 +1,18 @@
+{
+  "name": "gwf-monorepo",
+  "private": true,
+  "description": "Grok Workflow Framework — monorepo root",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build -w @gwf/cli",
+    "dev": "npm run dev -w @gwf/cli",
+    "test": "npm run test -w @gwf/cli",
+    "gwf": "node packages/cli/bin/gwf.js"
+  },
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "license": "MIT"
+}

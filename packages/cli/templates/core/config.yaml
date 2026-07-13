@@ -1,0 +1,19 @@
+# GWF project configuration
+version: 1
+
+# Optional monorepo packages (spec roots under .gwf/spec/<name>/)
+packages: []
+
+# Lifecycle hooks (shell commands). Failures are logged but do not block.
+# hooks:
+#   after_create:
+#     - 'echo created $TASK_JSON_PATH'
+#   after_start: []
+#   after_finish: []
+#   after_archive: []
+
+# Quality commands used by gwf-check (override per project)
+quality:
+  lint: null
+  typecheck: null
+  test: null
