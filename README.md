@@ -33,8 +33,12 @@ gwf init -u your-name
 grok --trust
 # 若已在 TUI 内：试 /hooks-trust（可能不在 / 补全列表里），或 /hooks 打开 Hooks 面板
 
-# 无 hooks 也能用：/start 或让 AI 跑
+# 大仓推荐：git commit 时拦截越界 diff
+gwf install-hooks
+
+# 无 Grok hooks 也能用：/start 或让 AI 跑
 # python .gwf/scripts/get_context.py
+# python .gwf/scripts/check_scope.py --strict-missing
 
 # 命令：/start  /continue  /finish-work
 ```
@@ -47,6 +51,7 @@ grok --trust
 | `gwf update` | 把项目模板同步到当前 CLI 版本 |
 | `gwf upgrade` | 升级全局 CLI 包 |
 | `gwf doctor` | 检查环境与项目健康状态 |
+| `gwf install-hooks` | 安装 git pre-commit（越界 diff 禁止提交） |
 | `gwf version` | 显示 CLI 版本 |
 
 ## 目录结构（init 后）

@@ -22,6 +22,8 @@ quality:
 guardrails:
   # When true, skills should treat empty allow_globs as a hard stop
   require_scope_json: true
+  # Install with: gwf install-hooks  (blocks out-of-scope commits)
+  pre_commit_scope_gate: true
   # Suggested deny patterns to copy into new tasks (not auto-enforced globally)
   suggested_deny_globs:
     - "**/node_modules/**"

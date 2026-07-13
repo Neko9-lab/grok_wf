@@ -42,6 +42,7 @@ Do **not** silently start large work without consent for a full task.
 3.2 Optional **gwf-break-loop** after a hard bugfix.
 3.3 **gwf-update-spec**: promote durable learnings into `.gwf/spec/`.
 3.4 Propose a batched commit plan; wait for user confirmation; then `git commit` (no amend, no push unless asked).
+    If `gwf install-hooks` is installed, pre-commit runs `check_scope.py --pre-commit` on **staged** files and blocks out-of-scope commits.
 3.5 `/finish-work`: archive completed task + append workspace journal (only after work commits exist; refuse if non-gwf dirty files remain).
 
 ## Commands

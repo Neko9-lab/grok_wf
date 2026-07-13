@@ -10,8 +10,9 @@
 2. **Deny high-risk trees** by default (core package, migrations, lockfiles, CI secrets).
 3. **Prefer vertical slices**: one module + its tests + minimal docs — not “drive-by refactors”.
 4. **Run `python .gwf/scripts/check_scope.py --strict-missing` in gwf-check**.
-5. **Run the smallest relevant test command** before finish (not only “it imports”).
-6. **If scope must expand**: stop, update `prd.md` + `scope.json`, get user consent, then continue.
+5. **Install git gate**: `gwf install-hooks` so `git commit` runs `check_scope.py --pre-commit`.
+6. **Run the smallest relevant test command** before finish (not only “it imports”).
+7. **If scope must expand**: stop, update `prd.md` + `scope.json`, get user consent, then continue.
 
 #### Forbidden
 

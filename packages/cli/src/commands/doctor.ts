@@ -97,6 +97,53 @@ export async function doctorCommand(opts: DoctorOptions): Promise<void> {
         ? "present"
         : "missing — re-run gwf update",
     });
+
+    const checkScope = existsSync(
+      join(projectRoot, GWF_DIR, "scripts", "check_scope.py"),
+    );
+    checks.push({
+      name: "Scope checker",
+      ok: checkScope,
+      detail: checkScope
+        ? ".gwf/scripts/check_scope.py present"
+        : "missing — gwf update",
+    });
+
+    // Best-effort: detect installed pre-commit block
+    const hookProbe = spawnSync(
+      "git",
+      ["rev-parse", "--git-path", "hooks/pre-commit"],
+      { cwd: projectRoot, encoding: "utf8", shell: true },
+    );
+    let hookDetail = "not installed (run: gwf install-hooks)";
+    let hookOk = false;
+    if (hookProbe.status === 0) {
+      const rel = (hookProbe.stdout || "").trim();
+      const hookPath = rel
+        ? rel.match(/^[A-Za-z]:[\\/]/) || rel.startsWith("/")
+          ? rel
+          : join(projectRoot, rel)
+        : join(projectRoot, ".git", "hooks", "pre-commit");
+      if (existsSync(hookPath)) {
+        try {
+          const body = readText(hookPath);
+          if (body.includes("gwf-pre-commit") || body.includes("check_scope.py")) {
+            hookOk = true;
+            hookDetail = "pre-commit scope gate installed";
+          } else {
+            hookDetail = "pre-commit exists but no GWF block — gwf install-hooks";
+          }
+        } catch {
+          hookDetail = "unreadable pre-commit hook";
+        }
+      }
+    }
+    checks.push({
+      name: "Git pre-commit gate",
+      // Optional but recommended — do not fail doctor hard
+      ok: true,
+      detail: hookOk ? hookDetail : `${hookDetail}`,
+    });
   }
 
   let failed = 0;

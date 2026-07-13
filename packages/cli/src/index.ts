@@ -7,6 +7,7 @@ import { initCommand } from "./commands/init.js";
 import { updateCommand } from "./commands/update.js";
 import { upgradeCommand } from "./commands/upgrade.js";
 import { doctorCommand } from "./commands/doctor.js";
+import { installHooksCommand } from "./commands/install-hooks.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -82,6 +83,20 @@ program
     await doctorCommand({
       cwd: opts.cwd as string,
       cliVersion: version,
+    });
+  });
+
+program
+  .command("install-hooks")
+  .description("Install git pre-commit hook that runs check_scope (blast radius)")
+  .option("-f, --force", "Rewrite the GWF hook block", false)
+  .option("--uninstall", "Remove the GWF pre-commit block", false)
+  .option("--cwd <path>", "Target project directory", process.cwd())
+  .action(async (opts) => {
+    await installHooksCommand({
+      cwd: opts.cwd as string,
+      force: Boolean(opts.force),
+      uninstall: Boolean(opts.uninstall),
     });
   });
 

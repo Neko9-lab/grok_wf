@@ -42,8 +42,12 @@ DEFAULT_ALWAYS_ALLOW = [
 ]
 
 
-def git_changed_files(root: Path) -> list[str]:
-    """Tracked + untracked paths relative to repo root (posix)."""
+def git_changed_files(root: Path, *, staged_only: bool = False) -> list[str]:
+    """Paths relative to repo root (posix).
+
+    staged_only=True  → only index (for pre-commit)
+    staged_only=False → vs HEAD + staged + untracked (for interactive check)
+    """
     files: set[str] = set()
 
     def run(*args: str) -> str:
@@ -56,12 +60,15 @@ def git_changed_files(root: Path) -> list[str]:
         )
         return r.stdout or ""
 
-    # committed-diff vs HEAD + staged + unstaged names
-    for out in (
-        run("diff", "--name-only", "HEAD"),
-        run("diff", "--name-only", "--cached"),
-        run("ls-files", "--others", "--exclude-standard"),
-    ):
+    if staged_only:
+        outs = (run("diff", "--name-only", "--cached"),)
+    else:
+        outs = (
+            run("diff", "--name-only", "HEAD"),
+            run("diff", "--name-only", "--cached"),
+            run("ls-files", "--others", "--exclude-standard"),
+        )
+    for out in outs:
         for line in out.splitlines():
             p = line.strip().replace("\\", "/")
             if p:
@@ -144,24 +151,46 @@ def main() -> None:
         action="store_true",
         help="Fail if scope.json is missing (recommended for large repos)",
     )
+    parser.add_argument(
+        "--staged-only",
+        action="store_true",
+        help="Only check staged files (use in git pre-commit)",
+    )
+    parser.add_argument(
+        "--pre-commit",
+        action="store_true",
+        help="Git hook mode: no active task → pass; staged-only; strict-missing",
+    )
     parser.add_argument("--json", action="store_true", help="Machine-readable output")
     args = parser.parse_args()
+
+    if args.pre_commit:
+        args.staged_only = True
+        args.strict_missing = True
 
     gwf = find_gwf_root()
     root = project_root(gwf)
     tid = args.task or get_active_task_id(gwf)
     if not tid:
+        if args.pre_commit:
+            print("GWF pre-commit: no active task — skip scope gate")
+            raise SystemExit(0)
         print("ERROR: no active task; pass task id", file=sys.stderr)
         raise SystemExit(2)
 
     task_dir = resolve_task_dir(gwf, tid)
     scope = load_scope(task_dir)
-    files = git_changed_files(root)
+    files = git_changed_files(root, staged_only=bool(args.staged_only))
 
+    # Pure meta commits (.gwf only) while task active: still run check; always-allow covers them
     if scope.get("missing"):
         msg = f"WARN: no scope.json in {task_dir.name} — cannot enforce blast radius"
         if args.strict_missing:
             print(msg.replace("WARN", "ERROR"), file=sys.stderr)
+            print(
+                "Fill scope.json or: python .gwf/scripts/task.py set-blast-radius …",
+                file=sys.stderr,
+            )
             raise SystemExit(1)
         print(msg, file=sys.stderr)
         if args.json:
@@ -191,7 +220,8 @@ def main() -> None:
     if args.json:
         print(json.dumps(payload, indent=2, ensure_ascii=False))
     else:
-        print(f"task={task_dir.name}")
+        mode = "staged" if args.staged_only else "worktree"
+        print(f"task={task_dir.name} mode={mode}")
         print(f"changed_total={len(files)} product={len(payload['product_changed'])}")
         for f in payload["product_changed"]:
             print(f"  · {f}")
@@ -200,6 +230,12 @@ def main() -> None:
             for v in violations:
                 print(f"  ✗ {v}")
             print("FAIL: diff is outside approved blast radius")
+            if args.pre_commit:
+                print(
+                    "Commit blocked. Fix files, or update scope.json with consent, "
+                    "or SKIP with: git commit --no-verify  (not recommended)",
+                    file=sys.stderr,
+                )
         else:
             print("OK: within scope")
 
