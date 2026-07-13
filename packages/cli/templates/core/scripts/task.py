@@ -113,6 +113,20 @@ def cmd_create(args: argparse.Namespace) -> None:
             json.dumps(JSONL_SEED, ensure_ascii=False) + "\n", encoding="utf-8"
         )
 
+    # Blast-radius contract (fill before coding on large repos)
+    write_json(
+        task_dir / "scope.json",
+        {
+            "allow_globs": [],
+            "deny_globs": [],
+            "max_changed_files": 25,
+            "_comment": (
+                "Fill allow_globs before coding. deny_globs block high-risk trees. "
+                "Run: python .gwf/scripts/check_scope.py --strict-missing"
+            ),
+        },
+    )
+
     if args.parent:
         parent_dir = resolve_task_dir(gwf, args.parent)
         parent = read_json(parent_dir / "task.json")
@@ -293,6 +307,26 @@ def cmd_set_scope(args: argparse.Namespace) -> None:
     print(f"scope={args.scope}")
 
 
+def cmd_set_blast_radius(args: argparse.Namespace) -> None:
+    """Write/merge scope.json allow/deny globs for check_scope.py."""
+    gwf = find_gwf_root()
+    task_dir = resolve_task_dir(gwf, args.task)
+    path = task_dir / "scope.json"
+    if path.is_file():
+        data = read_json(path)
+    else:
+        data = {"allow_globs": [], "deny_globs": [], "max_changed_files": 25}
+    if args.allow:
+        data["allow_globs"] = list(args.allow)
+    if args.deny:
+        data["deny_globs"] = list(args.deny)
+    if args.max_files is not None:
+        data["max_changed_files"] = args.max_files
+    data.pop("_comment", None)
+    write_json(path, data)
+    print(json.dumps(data, indent=2, ensure_ascii=False))
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(prog="task.py", description="GWF task manager")
     sub = parser.add_subparsers(dest="cmd", required=True)
@@ -346,6 +380,26 @@ def main() -> None:
     p.add_argument("task")
     p.add_argument("scope")
     p.set_defaults(func=cmd_set_scope)
+
+    p = sub.add_parser(
+        "set-blast-radius",
+        help="Set scope.json allow/deny globs for check_scope.py",
+    )
+    p.add_argument("task")
+    p.add_argument(
+        "--allow",
+        nargs="*",
+        default=None,
+        help="allow_globs (fnmatch), e.g. 'src/foo/**' 'tests/foo/**'",
+    )
+    p.add_argument(
+        "--deny",
+        nargs="*",
+        default=None,
+        help="deny_globs, e.g. 'vendor/**' '**/migrations/**'",
+    )
+    p.add_argument("--max-files", type=int, default=None)
+    p.set_defaults(func=cmd_set_blast_radius)
 
     args = parser.parse_args()
     args.func(args)

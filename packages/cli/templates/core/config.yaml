@@ -17,3 +17,17 @@ quality:
   lint: null
   typecheck: null
   test: null
+
+# Large-repo defaults (gwf-check / check_scope)
+guardrails:
+  # When true, skills should treat empty allow_globs as a hard stop
+  require_scope_json: true
+  # Suggested deny patterns to copy into new tasks (not auto-enforced globally)
+  suggested_deny_globs:
+    - "**/node_modules/**"
+    - "**/vendor/**"
+    - "**/migrations/**"
+    - "uv.lock"
+    - "package-lock.json"
+    - "pnpm-lock.yaml"
+    - "yarn.lock"

@@ -23,13 +23,18 @@ Do **not** silently start large work without consent for a full task.
 1.2 Complex tasks: write `design.md` and `implement.md` before coding.
 1.3 Research notes go under `tasks/<id>/research/`.
 1.4 Curate `implement.jsonl` / `check.jsonl` with **spec + research paths only** (no source code paths).
-1.5 After user reviews plan artifacts: `python .gwf/scripts/task.py start <task-dir-or-id>`.
+1.4b **Blast radius**: fill `scope.json` (`allow_globs` / `deny_globs` / `max_changed_files`). On large repos this is mandatory before coding. Helper: `python .gwf/scripts/task.py set-blast-radius <id> --allow 'src/foo/**' --deny 'vendor/**'`.
+1.5 After user reviews plan artifacts + scope: `python .gwf/scripts/task.py start <task-dir-or-id>`.
 
 ## Phase 2 — Execute
 
 2.1 Activate **gwf-before-dev**: read relevant specs and task artifacts before editing.
-2.2 Implement against `prd.md` (+ design/implement if present). Prefer **gwf-implement** agent for larger changes. Do not git commit inside implement.
-2.3 Activate **gwf-check** (or **gwf-check** agent): review diff vs specs, run lint/typecheck/test if available, self-fix when safe.
+2.2 Implement against `prd.md` (+ design/implement if present) **and stay inside `scope.json`**. Prefer **gwf-implement** agent for larger changes. Do not git commit inside implement.
+2.3 Activate **gwf-check** (or **gwf-check** agent):
+    - `python .gwf/scripts/check_scope.py --strict-missing`
+    - review diff vs specs / acceptance criteria
+    - run lint/typecheck/test if available; self-fix when safe
+    - if scope must grow: stop and get user consent, update scope.json first
 
 ## Phase 3 — Finish
 

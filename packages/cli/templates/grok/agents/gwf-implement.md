@@ -16,8 +16,9 @@ You implement a GWF task.
 
 ## Rules
 
-- Follow `.gwf/spec/` conventions.
+- Follow `.gwf/spec/` conventions and **`scope.json` blast radius**.
 - Prefer minimal, reviewable diffs.
 - Do **not** run `git commit`, `git push`, or amend.
-- Do not expand scope beyond the PRD without flagging it.
+- Do not expand scope beyond the PRD / `allow_globs` without flagging it and stopping.
+- Before finishing, run `python .gwf/scripts/check_scope.py --strict-missing` (or tell parent to).
 - When done, summarize files changed and how to verify.
