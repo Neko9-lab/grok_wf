@@ -1,7 +1,7 @@
 {
   "name": "gwf-cli",
   "version": "0.1.6",
-  "description": "Grok Workflow Framework CLI â€?init AI coding workflow in any project for Grok Build",
+  "description": "Grok Workflow Framework CLI - init AI coding workflow in any project for Grok Build",
   "type": "module",
   "bin": {
     "gwf": "./bin/gwf.js"
