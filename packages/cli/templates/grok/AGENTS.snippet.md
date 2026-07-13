@@ -7,6 +7,16 @@ This project uses **GWF** for structured AI development. Prefer GWF over ad-hoc 
 - Multi-file features, non-trivial bugs, refactors → create a GWF task (ask user first).
 - Simple Q&A or tiny one-line fixes → no task required.
 
+## Session orientation
+
+If SessionStart hooks did not run (project folder untrusted), at the start of work run:
+
+```bash
+python .gwf/scripts/get_context.py
+```
+
+To enable project hooks in Grok Build: launch with `grok --trust` from the repo, or run `/hooks-trust` (may not appear in the `/` autocomplete — type it fully), or open `/hooks` and use Trust if available. Hooks are optional; `/start` and skills work without them.
+
 ## Workflow
 
 Follow `.gwf/workflow.md`: **Plan → Execute → Finish**.

@@ -29,11 +29,14 @@ npm install -g @gwf/cli
 cd your-project
 gwf init -u your-name
 
-# 打开 Grok Build，信任项目 hooks（首次）
-# /hooks-trust
+# 推荐：带 trust 启动 Grok（项目 hooks 才会跑 SessionStart）
+grok --trust
+# 若已在 TUI 内：试 /hooks-trust（可能不在 / 补全列表里），或 /hooks 打开 Hooks 面板
 
-# 直接描述需求，或使用命令：
-# /start  /continue  /finish-work
+# 无 hooks 也能用：/start 或让 AI 跑
+# python .gwf/scripts/get_context.py
+
+# 命令：/start  /continue  /finish-work
 ```
 
 ## 命令

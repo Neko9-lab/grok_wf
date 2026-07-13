@@ -80,9 +80,14 @@ export async function initCommand(opts: InitOptions): Promise<void> {
   console.log(`
 Next steps:
   1. ${chalk.bold("git add .gwf .grok AGENTS.md .gitignore")} and commit
-  2. Open Grok Build in this project
-  3. Trust project hooks: ${chalk.bold("/hooks-trust")}
-  4. Start with the bootstrap task, or describe a feature
-     Commands: ${chalk.bold("/start")}  ${chalk.bold("/continue")}  ${chalk.bold("/finish-work")}
+  2. Open Grok Build in this project directory
+  3. Trust project hooks (TUI often hides /hooks-trust from the / menu):
+       ${chalk.bold("grok --trust")}          # recommended: launch from this repo
+       or type ${chalk.bold("/hooks-trust")}  # may work even if not listed
+       or ${chalk.bold("/hooks")}             # open Hooks tab; use Trust if shown
+  4. ${chalk.bold("/start")} or ask: run python .gwf/scripts/get_context.py
+  5. Describe a feature — Plan → Execute → ${chalk.bold("/finish-work")}
+
+  Note: hooks are optional. Without trust, /start and skills still work.
 `);
 }

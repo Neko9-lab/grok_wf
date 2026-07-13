@@ -86,7 +86,7 @@ export async function doctorCommand(opts: DoctorOptions): Promise<void> {
       name: "Grok hooks",
       ok: existsSync(join(projectRoot, GROK_DIR, "hooks")),
       detail: existsSync(join(projectRoot, GROK_DIR, "hooks"))
-        ? ".grok/hooks present (trust via /hooks-trust)"
+        ? ".grok/hooks present (trust: grok --trust or /hooks-trust)"
         : "missing .grok/hooks",
     });
 
